@@ -98,12 +98,12 @@ for raw_file_path in raw_file_paths:
         "trial_target": trial_target,
         "aim_target": np.array(aim_angle),
         "reach_target": np.array(reach_angle),
-        # "auc_from_target": np.array(auc_from_target),
-        # "auc_from_min": np.array(auc_from_min)
+        "auc_from_target": np.array(auc_from_target),
+        "auc_from_min": np.array(auc_from_min)
     }
     print(raw_file_path)
 
-    # data_h5 = pd.DataFrame.from_dict(data_h5)
+    data_h5 = pd.DataFrame.from_dict(data_h5)
     data.append(data_h5)
 
-# data = pd.concat(data, ignore_index=True)
+data = pd.concat(data, ignore_index=True)
