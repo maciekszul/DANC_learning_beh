@@ -15,7 +15,7 @@ except:
 try:
     output_path = str(sys.argv[2])
 except:
-    output_path = "/home/mjszul/git/implicit_explicit_beh/data"
+    output_path = "/home/mjszul/git/DANC_learning_beh/data"
 
 print("BEH DATA DIR:", subject_path)
 print("OUTPUT DATA DIR:", output_path)
@@ -31,6 +31,7 @@ raw_file_paths.sort()
 # raw_file_path = raw_file_paths[0] # iteration
 data = []
 for raw_file_path in raw_file_paths:
+    print(raw_file_path)
     raw_data = h5py.File(raw_file_path, "r")
 
     subject_id = int(raw_data["run_params"]["subj_id"][0])
@@ -78,7 +79,7 @@ for raw_file_path in raw_file_paths:
             t_reach_angle = np.nan
             t_auc_from_target = np.nan
             t_auc_from_min = np.nan
-        print(t_aim_angle, t_reach_angle, t_auc_from_target, t_auc_from_min)
+        # print(t_aim_angle, t_reach_angle, t_auc_from_target, t_auc_from_min)
         aim_angle.append(t_aim_angle)
         reach_angle.append(t_reach_angle)
         auc_from_target.append(t_auc_from_target)
@@ -101,9 +102,18 @@ for raw_file_path in raw_file_paths:
         "auc_from_target": np.array(auc_from_target),
         "auc_from_min": np.array(auc_from_min)
     }
-    print(raw_file_path)
 
     data_h5 = pd.DataFrame.from_dict(data_h5)
     data.append(data_h5)
 
 data = pd.concat(data, ignore_index=True)
+coherences = data.trial_coherence.unique()
+categories = ["zero", "low", "med", "high"]
+coh_cat = {i[0]: i[1] for i in zip(coherences, categories)}
+
+def cat_func(row, dictionary):
+    return dictionary[row]
+
+data["coh_cat"] = data.trial_coherence.apply(lambda x: cat_func(x, coh_cat))
+
+data.to_csv(op.join(output_path, "subj-{}.csv".format(subject_id)), index=False)
