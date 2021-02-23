@@ -10,12 +10,12 @@ from utilities import visang, files
 try:
     subject_path = str(sys.argv[1])
 except:
-    subject_path = "/home/mjszul/BrainDyn Dropbox/Maciek Szul/explicit_implicit_beta/data/sub-101/ses-01/behaviour"
+    subject_path = "/home/mszul/BrainDyn Dropbox/Maciek Szul/explicit_implicit_beta/data/sub-101/ses-01/behaviour"
 
 try:
     output_path = str(sys.argv[2])
 except:
-    output_path = "/home/mjszul/git/DANC_learning_beh/data"
+    output_path = "/home/mszul/git/DANC_learning_beh/data"
 
 print("BEH DATA DIR:", subject_path)
 print("OUTPUT DATA DIR:", output_path)
