@@ -13,7 +13,7 @@ data_files.sort()
 
 all_pps = pd.concat([pd.read_csv(i) for i in data_files], ignore_index=True)
 condition_df = all_pps.groupby("subject_id", as_index=False).group.mean()
-grid_row_n = int(condition_df.shape[0]/2)+1
+grid_row_n = int(condition_df.shape[0]/2)+2
 
 
 col_pal = ["#5CE619", "#195CE6", "#E6195C"]

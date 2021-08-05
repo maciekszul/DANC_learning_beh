@@ -62,6 +62,7 @@ for raw_file_path in raw_file_paths:
         try:
             radius, angle = zip(*[cart2pol(p[0], p[1]) for p in xy])
             dev_from_t = np.rad2deg(np.abs(angle) - target_angle)
+            # dev_from_t = np.rad2deg(target_angle) - np.rad2deg(angle)
             targ_cross = np.min(np.where(radius > target_radius))
             fiddypx_cross = np.min(np.where(radius > np.array(50)))
             t_aim_angle = dev_from_t[fiddypx_cross]
