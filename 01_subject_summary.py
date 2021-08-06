@@ -7,7 +7,7 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 
 
-# display mode: switching between marker modes
+# display mode: AIM vs REACH
 try:
     display_mode = int(sys.argv[1])
 except:
@@ -139,7 +139,7 @@ for i in group_dict.keys():
     # figure.suptitle(group_dict[i][0], fontsize=12)
 
     path = "imgs/{}_subj_summary_{}.png".format(name_xx, group_dict[i][0])
-    plt.savefig(path, bbox_inches="tight", dpi=300)
+    plt.savefig(path, bbox_inches="tight", dpi=150)
     plt.close()
 
 
