@@ -57,6 +57,29 @@ range_ang = np.linspace(-101, 101, num=200)
 
 
 for group in  all_data.group.unique():
+    perturb_ledge = [
+        Patch(
+            fc="black",
+            ec=None,
+            alpha=0.5,
+            label=u"+30\N{DEGREE SIGN}"
+        ),
+        Patch(
+            fc="black",
+            ec=None,
+            alpha=0.25,
+            label=u"-30\N{DEGREE SIGN}"
+        )
+    ]
+    if group == 0:
+        perturb_ledge = [
+            Patch(
+                fc="black",
+                ec=None,
+                alpha=0.5,
+                label=u"-30\N{DEGREE SIGN}"
+            )
+        ]
     f, ax = plt.subplots(figsize=(16,6))
     for block in all_data.block.unique():
         data = all_data[
@@ -70,7 +93,7 @@ for group in  all_data.group.unique():
                     (data.coh_cat == coh_lv)
                 ]
                 if chunk.size != 0:
-                    print(pt_dir, coh_lv, chunk.shape[0], data.shape[0], all_data.shape[0])
+                    # print(pt_dir, coh_lv, chunk.shape[0], data.shape[0], all_data.shape[0])
                     if display_mode == 0:
                         X = chunk.reach_sub_perturb.to_numpy()
                         name_xx = "reach"
@@ -80,11 +103,11 @@ for group in  all_data.group.unique():
                     X = X[~np.isnan(X)]
                     kde = gaussian_kde(X)
                     result = kde(range_ang) * 15
-                    # result = result * (all_data.shape[0]/chunk.shape[0]) * 0.1
                     alpha = 0.5
                     if (pt_dir == -30.0) & (group == 1):
                         result = -result
                         alpha = 0.25
+
                     median_ix = np.where(range_ang <= np.median(X))[0][-1]
                     ax.fill_betweenx(
                         range_ang,
@@ -99,20 +122,28 @@ for group in  all_data.group.unique():
                         [np.median(X), np.median(X)],
                         "--",
                         c=coherence[coh_lv],
-                        alpha=alpha+0.1
+                        alpha=alpha
                     )
 
     ax.set_xticks(all_data.block.unique())
     ax.set_ylabel("Angle from the target [deg]")
     ax.set_xlabel("Block")
 
-    ax.legend(
+    leg1 = plt.legend(
             handles=colour_ledge, fontsize="x-small", 
             loc=1, ncol=1, borderpad=0.1,
             title="coherence",
             title_fontsize="xx-small"
         )
+    leg2 = plt.legend(
+            handles=perturb_ledge, fontsize="x-small", 
+            loc=4, ncol=1, borderpad=0.1,
+            title="perturbation",
+            title_fontsize="xx-small"
+        )
 
+    plt.gca().add_artist(leg1)
+    plt.gca().add_artist(leg2)
     # plt.show(block=False)
     path = "imgs/{}_group_summary_{}.png".format(name_xx, group_dict[group][0])
     plt.savefig(path, bbox_inches="tight", dpi=150)
